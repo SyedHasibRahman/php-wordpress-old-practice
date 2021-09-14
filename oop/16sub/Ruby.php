@@ -1,0 +1,11 @@
+<?php
+Namespace hasib\live;
+
+   class Ruby{
+       public function __construct(){
+           echo "I am Learning Ruby.<br>";
+       }
+   }
+
+
+?>

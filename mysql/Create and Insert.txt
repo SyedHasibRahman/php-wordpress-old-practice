@@ -1,0 +1,536 @@
+SQL Queries With PhpMyAdmin (Create & Drop Database)-Part:02
+____________________________________________________________
+CREATE DATABASE liveproject;
+DROP DATABASE liveproject;
+if disable database droping...(https://youtu.be/o_J9OX4E2Og)
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Create Table)-Part:03
+____________________________________________________________
+CREATE DATABASE velvee;
+CREATE TABLE customers(
+	id INT NOT NULL AUTO_INCREMENT,
+    firstName VARCHAR(255),
+    latName VARCHAR(255),
+    address VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    division VARCHAR(255),
+    zipCode VARCHAR(255),
+    PRIMARY KEY(id)
+);
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data)-Part:04
+____________________________________________________________
+INSERT INTO customers(firstName, lastName, address, email, city, division, zipcode) VALUES
+('Syed Fahim', 'Islam', 'Khulna', 'fahim@gmail', 'Khulna', 'Dhaka', '9000'),
+('Miraz Mollah', 'Islam', 'Khulna', 'Mollah@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Shahin', 'Hossain', 'Khulna', 'Shahin@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Rafin', 'Islam', 'Khulna', 'Rafin@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Parvej', 'Hossain', 'Khulna', 'Parvej@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Mejbah', 'Islam', 'Khulna', 'Mejbah@gmail', 'Khulna', 'Dhaka', '9000'),
+('Alif Mollah', 'Islam', 'Khulna', 'Alif@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Tazmim', 'Islam', 'Khulna', 'Tazmim@gmail', 'Khulna', 'Dhaka', '9000'),
+('Syed Jannatul', 'Islam', 'Khulna', 'Jannatul@gmail', 'Khulna', 'Dhaka', '9000');
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Update Data)-Part:05
+____________________________________________________________
+
+UPDATE customers
+SET email = 'fahim@yahoo.com'
+WHERE id = 2;
+
+UPDATE customers
+SET zipcode = '1205'
+WHERE id = 2;
+ 
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Delete Data)-Part:06
+____________________________________________________________
+DELETE FROM customers
+WHERE id = 12;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Alter Table)-Part:07
+____________________________________________________________
+* ALTER TABLE customers ADD newCol VARCHAR(255);
+
+* ALTER TABLE customers
+  MODIFY COLUMN newCol INT(11);
+
+* ALTER TABLE customers
+  DROP COLUMN newCol;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Select Data)-Part:08
+____________________________________________________________
+SELECT * FROM customers LIMIT 3;
+
+SELECT * FROM customers LIMIT 3, 4;
+
+SELECT firstName, lastName FROM customers;
+
+SELECT * FROM customers WHERE id = 7;
+
+SELECT * FROM customers ORDER BY lastName;
+
+SELECT * FROM customers ORDER by lastName DESC;
+SELECT * FROM customers ORDER by lastName ASC;
+
+SELECT city FROM customers;
+SELECT DISTINCT city FROM customers;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Operators Overview)-Part:09
+____________________________________________________________
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Between Operator)-Part:10
+____________________________________________________________
+SELECT * FROM customers 
+WHERE age 
+BETWEEN 20 AND 30;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Like Operator)-Part:11
+____________________________________________________________
+SELECT * FROM customers
+WHERE city LIKE '%a'; ('K'hulna)
+OR
+SELECT * FROM customers
+WHERE city LIKE 'd%'; ('D'haka)
+
+SELECT * FROM customers
+WHERE firstName LIKE '%Hasib%'; (Syed Hasib)
+
+SELECT * FROM customers
+WHERE firstName NOT LIKE '%Syed%'; 
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (IN Operator)-Part:12
+____________________________________________________________
+SELECT * FROM customers
+WHERE city IN('Dhaka', 'Sylhet', 'Gopalganj');
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Indexes)-Part:13
+____________________________________________________________
+CREATE INDEX CIndex
+ON customers(city);
+===
+DROP INDEX CIndex ON customers; 
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Relationships & Foreign Keys)-Part:14
+____________________________________________________________
+
+CREATE TABLE products(
+	id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    price INT,
+    PRIMARY KEY (id)
+);
+
+======
+
+CREATE TABLE orders(
+	id INT NOT NULL AUTO_INCREMENT,
+    orderNumber VARCHAR(255),
+    productId INT,
+    customerId INT,
+    orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id),
+    FOREIGN KEY(productId) REFERENCES products(id),
+    FOREIGN Key (customerId) REFERENCES customers(id)
+);
+
+
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Joins)-Part:15
+____________________________________________________________
+
+INSERT INTO products(name, price) VALUES
+('Product One', '20'),
+('Product Two', '30'),
+('Product Three', '45'),
+('Product Four', '75'),
+('Product Five', '100'),
+('Product Six', '150'),
+('Product Seven', '250');
+==============\========
+INSERT INTO orders( orderNumber, productId, customerId) VALUES
+(01, 1, 4),
+(02, 3, 1),
+(03, 1, 9),
+(04, 7, 2),
+(05, 6, 1),
+(06, 1, 6),
+(07, 4, 7),
+(08, 2, 5),
+(09, 1, 4);
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Inner Join)-Part:16
+____________________________________________________________
+SELECT customers.firstName, customers.lastName, orders.orderNumber
+FROM customers
+INNER JOIN orders
+ON customers.id = orders.customerId
+ORDER BY customers.firstName;
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Left Join)-Part:17
+____________________________________________________________
+SELECT customers.firstName, customers.lastName, orders.orderNumber, orders.orderDate
+FROM customers
+LEFT JOIN orders
+ON customers.id = orders.customerId
+ORDER BY customers.lastName;
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Right Join)-Part:18
+____________________________________________________________
+SELECT orders.orderNumber, customers.firstName, customers.lastName
+FROM orders
+RIGHT JOIN customers
+ON orders.customerId = customers.id
+ORDER BY customers.lastName
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Union Operator)-Part:19
+____________________________________________________________
+CREATE TABLE suppliers(
+    id INT NOT NULL AUTO_INCREMENT,
+    firstName VARCHAR(255),
+    lastName VARCHAR(255),
+    address VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    division VARCHAR(255),
+    zipcode VARCHAR(255),
+    PRIMARY KEY(id)
+);
+=======
+INSERT INTO suppliers 
+(firstName, lastName, email, address, city, division, zipcode) VALUES
+('Al', 'Amin', 'amin@gmail.com', 'House 2 lane 3', 'Comilla', 'Chittagong', '1422'  ),
+('Jabed', 'Hassan', 'hassan@gmail.com', 'House 1 lane 3', 'Gazipur', 'Dhaka', '1236'  ),
+('Cynthia', 'Porter', 'Porter@gmail.com', 'House 5 lane 7', 'Dhaka', 'Dhaka', '1205' ),
+('Diane', 'Hager', 'Hager@gmail.com', 'House 6 lane 9', 'Moulovibazar', 'Sylhet', '1006' ),
+('Margaret', 'Schiro', 'Schiro@gmail.com', 'House 3 lane 9', 'Habiganj', 'Sylhet', '1100' ),
+('Thomas', 'Davie', 'Davie@gmail.com', 'House 11 lane 13', 'Lalmonirhat', 'Rangpur', '1256' ),
+('Tomas', 'Heath', 'Tomas@gmail.com', 'House 1 lane 13', 'Kurigram', 'Rangpur', '1256' ),
+('Anna', 'Reyes', 'Reyes@gmail.com', 'House 12 lane 3', 'Rajshahi', 'Rajshahi', '1222' );
+
+
+================
+SELECT city FROM customers
+UNION
+SELECT city FROM suppliers
+ORDER BY city;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Union All)-Part:20
+____________________________________________________________
+
+SELECT city FROM customers
+UNION ALL
+SELECT city FROM suppliers
+ORDER BY city;
+
+===============
+SELECT city, division FROM customers
+WHERE city = "Dhaka"
+UNION ALL
+SELECT city, division FROM suppliers
+WHERE city = "Dhaka"
+ORDER BY city;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Join Multiple Tables)-Part:21
+____________________________________________________________
+
+SELECT orders.orderNumber, customers.firstName, customers.lastName, products.name
+FROM orders
+INNER JOIN products
+	ON orders.productId = products.id
+INNER JOIN customers
+	ON orders.customerId = customers.id
+ORDER BY orders.id
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Subquery IN SELECT)-Part:22
+____________________________________________________________
+
+SELECT * FROM customers
+WHERE id IN(SELECT id 
+           FROM customers
+            WHERE age > 30
+           );
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Subquery with INSERT)-Part:23
+____________________________________________________________
+CREATE TABLE customers_bup(
+	id INT NOT NULL AUTO_INCREMENT,
+	firstName VARCHAR(255),
+    lastName VARCHAR(255),
+    address VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    division VARCHAR(255),
+    zipcode VARCHAR(255),
+    PRIMARY KEY(id)
+);
+
+============
+
+INSERT INTO customers_bup
+	SELECT * FROM customers
+    WHERE id IN(
+    	SELECT id
+        FROM customers
+    );
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Subquery with Update & Delete)-Part:24
+____________________________________________________________
+
+UPDATE customers
+	set salary = salary*0.25
+    WHERE age IN(
+    	SELECT age FROM customers_bup
+        WHERE age > 30
+    );
+======
+DELETE FROM customers_bup
+	WHERE age IN(SELECT age FROM customers
+                WHERE age = 36
+                );
+
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (TRUNCATE TABLE)-Part:25
+____________________________________________________________
+Truncate Table mean Delate data from table without deleting table.
+
+TRUNCATE TABLE customers_bup;
+
+
+
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Wildcard Operators)-Part:26
+____________________________________________________________
+
+https://www.w3schools.com/sql/sql_wildcards.asp#:~:text=A%20wildcard%20character%20is%20used,specified%20pattern%20in%20a%20column.
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Aliases for Column)-Part:27
+____________________________________________________________
+
+For rename database:
+SELECT firstName AS 'First Name', lastName AS 'Last Name' FROM customers;
+for contat:
+SELECT CONCAT(firstName, '', lastName) AS 'Name', email, address, city FROM customers;
+
+SELECT CONCAT(firstName, '', lastName) AS 'Name', CONCAT(address, ' ', city ) AS Address FROM customers;
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Aliases for Table)-Part:28
+____________________________________________________________
+SELECT o.id, o.orderDate, c.firstName, c.lastName
+FROM customers AS c, orders AS o;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Aggregate Functions)-Part:29
+____________________________________________________________
+SELECT AVG(age) FROM customers;
+SELECT COUNT(age) FROM customers;
+SELECT MAX(age) FROM customers;
+SELECT MIN(age) FROM customers; 
+SELECT SUM(age) FROM customers;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (GROUP BY Statement)-Part:30
+____________________________________________________________
+
+SELECT age, COUNT(age)
+FROM customers
+WHERE age > 30
+GROUP BY age;
+
+====
+
+SELECT age, COUNT(age)
+FROM customers 
+GROUP BY age;
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (HAVING Clause)-Part:31
+____________________________________________________________
+
+SELECT age, COUNT(age)
+FROM customers 
+GROUP BY age
+HAVING COUNT(age)>=2;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (CREATE VIEW)-Part:32
+____________________________________________________________
+CREATE VIEW customers_view AS 
+	SELECT id, firstName, lastName
+    FROM customers
+    WHERE firstName IS NOT NULL;
+
+
+=========
+
+SELECT * FROM customers_view;
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+
+INSERT INTO customers_view 
+VALUES(11, 'Helal', 'Khan')
+
+SELECT * FROM customers_view;
+
+INSERT INTO customers_view VALUES(12, NULL, 'Khan') (NOTE: NULL will not execute)
+ 
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (WITH CHECK OPTION)-Part:34
+____________________________________________________________
+
+CREATE VIEW customers_view_new AS
+	SELECT id, firstName, lastName
+		FROM customers
+			WHERE firstName IS NOT NULL
+				WITH CHECK OPTION
+
+======================
+INSERT INTO customers_view_new
+VALUES (13, 'AL Amin', 'Hossain')
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (UPDATE, DELETE, DROP VIEW)-Part:35
+____________________________________________________________
+
+UPDATE customers_view
+SET firstName = 'Kamal'
+WHERE id = 11;
+===
+DELETE FROM customers_view
+WHERE id = '13';
+=======
+DROP VIEW customers_view_new
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (UCASE & LCASE Functions)-Part:36
+____________________________________________________________
+SELECT UCASE(firstName) FROM customers
+SELECT LCASE(firstName), UCASE(lastName) FROM customers
+SELECT LCASE(firstName), UCASE(lastName), address FROM customers
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (MID, LENGTH, ROUND Functions)-Part:37
+____________________________________________________________
+SELECT MID(city,1,3) AS ShortCity
+FROM customers
+===
+SELECT firstName, LENGTH(address) AS LengthOfAddress
+FROM customers;
+===
+SELECT firstName, ROUND(salary,0) AS roundSalary
+FROM customers;
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (NOW Function)-Part:38 // Time
+____________________________________________________________
+SELECT name, price, Now() AS Date
+FROM products
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (GUI Mode Operation)-Part:39
+____________________________________________________________
+Create database with click
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (DATABASE Backup)-Part:40
+____________________________________________________________
+
+
+
+
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+____________________________________________________________
+SQL Queries With PhpMyAdmin (Insert Data into a VIEW)-Part:33
+____________________________________________________________
+
+
